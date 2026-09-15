@@ -6,26 +6,35 @@
 
 completion_models:
   default_completion_model:
-    model_provider: openai
-    model: gpt-4.1
+    model_provider: groq
+    model: openai/gpt-oss-20b
     auth_method: api_key # or azure_managed_identity
-    api_key: ${GRAPHRAG_API_KEY} # set this in the generated .env file, or remove if managed identity
+    api_key: ${GROQ_API_KEY} # set this in the generated .env file, or remove if managed identity
     retry:
       type: exponential_backoff
 
 embedding_models:
   default_embedding_model:
-    model_provider: openai
-    model: text-embedding-3-large
+    model_provider: openai         # keep as 'openai' so LiteLLM uses OpenAI schema
+    model: all-MiniLM-L6-v2        # name passed through to the server
     auth_method: api_key
-    api_key: ${GRAPHRAG_API_KEY}
-    retry:
-      type: exponential_backoff
+    api_key: dummy-key             # not actually used by your local server
+    api_base: http://localhost:8686/v1
+
+embeddings:
+  llm:
+    type: openai_embedding         # GraphRAG’s embedding type
+    model: all-MiniLM-L6-v2
+    api_key: dummy-key
+    api_base: http://localhost:8686
 
 ### Document processing settings ###
 
 input:
-  type: text # [csv, text, json, jsonl]
+  type: csv
+  text_column: v2
+  title_column: v1
+  max_documents: 100
 
 chunking:
   type: tokens
