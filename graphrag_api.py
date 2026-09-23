@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 from pathlib import Path
 
@@ -30,7 +31,7 @@ def health() -> dict[str, str]:
 @app.post("/query", response_model=QueryResponse)
 def query(request: QueryRequest) -> QueryResponse:
     command = [
-        "python",
+        sys.executable,
         "-m",
         "graphrag",
         "query",
