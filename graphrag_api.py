@@ -28,7 +28,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/query", response_model=QueryResponse)
+@app.post("/graphrag-query", response_model=QueryResponse)
 def query(request: QueryRequest) -> QueryResponse:
     command = [
         sys.executable,
