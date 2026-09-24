@@ -1,3 +1,19 @@
 .idea
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment and secrets
 .env
-.venv
+.env.*
+
+# Runtime logs and generated GraphRAG data
+logs/
+cache/
+output/
