@@ -24,36 +24,44 @@ where 15, 16, 1, 5, 7, 23, 2, 7, 34, 46, and 64 represent the id (not the index)
 
 Do not include information where the supporting evidence for it is not provided.
 
+---Response rules---
 
----Target response length and format---
+Use only the supplied data tables to answer the user's question.
 
-{response_type}
+If the supplied context does not support a reliable answer, abstain.
+Do not use general knowledge to fill missing evidence.
+Do not infer missing entities, relationships, campaigns, or timelines.
+Do not provide instructions that facilitate fraud, evasion, theft, or other wrongdoing.
 
+Return only valid JSON with exactly these fields:
+
+{{
+  "abstention_status": "answer" or "abstain",
+  "is_spam": true, false, or null,
+  "answer": "string or null",
+  "abstention_reason": "string or null"
+}}
+
+Use:
+- "answer" only when the supplied context supports the response.
+- "abstain" when the context is missing, insufficient, ambiguous, or contradictory.
+- "answer": null when abstaining.
+- "abstention_reason": null when answering.
+- "is_spam": null when the context does not support a spam classification.
+
+The answer must be concise enough to fit in a single response.
+
+Limit the answer to at most 3 short sections and 5 bullet points.
+Do not reproduce long source messages.
+For examples, quote at most 2 short excerpts.
+Always finish the JSON object with valid closing quotes and braces.
+
+Do not wrap the JSON in Markdown code fences.
+Do not include any text before or after the JSON object.
 
 ---Data tables---
 
 {context_data}
-
-
----Goal---
-
-Generate a response of the target length and format that responds to the user's question, summarizing all information in the input data tables appropriate for the response length and format, and incorporating any relevant general knowledge.
-
-If you don't know the answer, just say so. Do not make anything up.
-
-Points supported by data should list their data references as follows:
-
-"This is an example sentence supported by multiple data references [Data: <dataset name> (record ids); <dataset name> (record ids)]."
-
-Do not list more than 5 record ids in a single reference. Instead, list the top 5 most relevant record ids and add "+more" to indicate that there are more.
-
-For example:
-
-"Person X is the owner of Company Y and subject to many allegations of wrongdoing [Data: Sources (15, 16), Reports (1), Entities (5, 7); Relationships (23); Claims (2, 7, 34, 46, 64, +more)]."
-
-where 15, 16, 1, 5, 7, 23, 2, 7, 34, 46, and 64 represent the id (not the index) of the relevant data record.
-
-Do not include information where the supporting evidence for it is not provided.
 
 
 ---Target response length and format---
